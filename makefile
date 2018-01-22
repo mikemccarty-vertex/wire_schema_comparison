@@ -20,7 +20,7 @@ $(filter include/%_fb.hpp,$(FLATBUFFERS_HPP)) : include/%_fb.hpp : schemata/%.fb
 	mv include/$(*)_generated.h $@
 
 $(CPP_EXE) : $(CPP_SRC)
-	clang++ -g -std=c++14 -I include $< -o $@ -lavrocpp_s
+	clang++ -g -std=c++14 -I src -I include $< -o $@ -lavrocpp_s
 
 .PHONY: install clean
 #install:
