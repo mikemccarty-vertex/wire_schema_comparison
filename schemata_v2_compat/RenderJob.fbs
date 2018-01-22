@@ -1,3 +1,4 @@
+// commandline:  flatc --conform RenderJob.fbs RenderJob_v1_incompat.fbs
 namespace speedracer_fb;
 
 
@@ -77,6 +78,7 @@ table ImageFragmentBuffers
     extents : Viewport;
     pixels  : DataBuffer;
     depth   : DataBuffer;
+    index   : DataBuffer;
 }
 
 table ImageFragmentInfo
@@ -88,7 +90,7 @@ table ImageFragmentInfo
 
 table ImageFragmentList
 {
-    frame     : FrameID;
+    frame     : string;
     fragments  : [ImageFragmentInfo];
     totalCount : int = 0;
     accumCount : int = 0;
