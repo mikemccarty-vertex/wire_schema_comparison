@@ -1,0 +1,96 @@
+namespace speedracer_fb;
+
+
+enum DataBufferFormat : byte
+{
+    BUFFER_NONE,
+    BUFFER_RGB_8,
+    BUFFER_RGBA_8,
+    BUFFER_UINT_16_LE,
+    BUFFER_UINT_16_BE,
+    BUFFER_FLOAT_32_LE
+}
+
+struct Vector3f
+{
+    x : float = 0;
+    y : float = 0;
+    z : float = 0;
+}
+
+struct Color3f
+{
+    r : float = 0;
+    g : float = 0;
+    b : float = 0;
+}
+
+struct Matrix4f
+{
+    basis_x : Vector3f;
+    basis_y : Vector3f;
+    t : Vector3f;
+    s : float;
+}
+
+struct Viewport
+{
+    width : int = 0;
+    height : int = 0;
+}
+
+struct BoundingBox2i
+{
+    xmin : int = 2147483647;
+    xmax : int = -2147483648;
+
+    ymin : int = 2147483647;
+    ymax : int = -2147483648;
+}
+
+struct BoundingBox3f
+{
+    xmin : float = 1e38;
+    xmax : float = -1e38;
+
+    ymin : float = 1e38;
+    ymax : float = -1e38;
+
+    zmin : float = 1e38;
+    zmax : float = -1e38;
+}
+
+table DataBuffer
+{
+    format : DataBufferFormat = BUFFER_NONE;
+    data: [ubyte];
+}
+
+table FrameID
+{
+    id : string;
+}
+
+
+table ImageFragmentBuffers
+{
+    extents : Viewport;
+    pixels  : DataBuffer;
+    depth   : DataBuffer;
+}
+
+table ImageFragmentInfo
+{
+    key     : string;
+    bounds  : BoundingBox2i;
+    isOpaque : bool = false;
+}
+
+table ImageFragmentList
+{
+    frame     : string;
+    fragments  : [ImageFragmentInfo];
+    totalCount : int = 0;
+    accumCount : int = 0;
+}
+

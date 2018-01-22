@@ -1,0 +1,263 @@
+[
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.vecmat",
+        "type": "record",
+        "name": "Vector3f",
+        "fields": [
+            {
+                "name": "x",
+                "type": "float",
+                "default": 0.0
+            },
+            {
+                "name": "y",
+                "type": "float",
+                "default": 0.0
+            },
+            {
+                "name": "z",
+                "type": "float",
+                "default": 0.0
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.vecmat",
+        "type": "record",
+        "name": "Color3f",
+        "fields": [
+            {
+                "name": "r",
+                "type": "float",
+                "default": 0.0
+            },
+            {
+                "name": "g",
+                "type": "float",
+                "default": 0.0
+            },
+            {
+                "name": "b",
+                "type": "float",
+                "default": 0.0
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.vecmat",
+        "type": "record",
+        "name": "Matrix4f",
+        "fields": [
+            {
+                "name": "matrix",
+                "type": {
+                    "type": "array",
+                    "items": "float"
+                },
+                "default": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.primitives",
+        "type": "record",
+        "name": "BoundingBox3f",
+        "fields": [
+            {
+                "name": "xmin",
+                "type": "float"
+            },
+            {
+                "name": "xmax",
+                "type": "float"
+            },
+            {
+                "name": "ymin",
+                "type": "float"
+            },
+            {
+                "name": "ymax",
+                "type": "float"
+            },
+            {
+                "name": "zmin",
+                "type": "float"
+            },
+            {
+                "name": "zmax",
+                "type": "float"
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.primitives",
+        "type": "record",
+        "name": "BoundingBox2i",
+        "fields": [
+            {
+                "name": "xmin",
+                "type": "int",
+                "default": 2147483647
+            },
+            {
+                "name": "xmax",
+                "type": "int",
+                "default": -2147483648
+            },
+            {
+                "name": "ymin",
+                "type": "int",
+                "default": 2147483647
+            },
+            {
+                "name": "ymax",
+                "type": "int",
+                "default": -2147483648
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro.scene",
+        "type": "record",
+        "name": "Viewport",
+        "fields": [
+            {
+                "name": "width",
+                "type": "int",
+                "default": 320
+            },
+            {
+                "name": "height",
+                "type": "int",
+                "default": 240
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "name": "DataBufferFormat",
+        "type": "enum",
+        "doc" : "Data buffer types, _LE == little-endian byte order, _BE == big-endian byte order",
+        "symbols": [
+            "BUFFER_NONE",
+            "BUFFER_RGB_8",
+            "BUFFER_RGBA_8",
+            "BUFFER_UINT_16_LE",
+            "BUFFER_UINT_16_BE",
+            "BUFFER_FLOAT_32_LE"
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "type": "record",
+        "name": "DataBuffer",
+        "doc" : "A low-level structure holding a typed array of bytes.",
+        "fields": [
+            {
+                "name": "format",
+                "type": "DataBufferFormat",
+                "default": "BUFFER_NONE"
+
+            },
+            {
+                "name": "data",
+                "type": "bytes",
+                "doc" : "Sequence of bytes whose interpretation is determined by _format_."
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "type": "record",
+        "name": "ImageFragmentBuffers",
+        "doc" : "Image data serialized to memcached and indirectly referenced by ImageFragmentInfo",
+        "fields": [
+            {
+                "name": "extents",
+                "type": "com.echo5.speedracer.render3d.avro.scene.Viewport"
+            },
+            {
+                "name": "pixels",
+                "doc" : "Must be one of the RGB formats",
+                "type": "DataBuffer"
+            },
+            {
+                "name": "depth",
+                "doc" : "Must be either INT_16 or FLOAT_32",
+                "type": "DataBuffer"
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "type": "record",
+        "name": "FrameID",
+        "fields": [
+            {
+                "name": "id",
+                "type": "string",
+                "default": ""
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "type": "record",
+        "name": "ImageFragmentInfo",
+        "doc" : "Represents a reference to an image fragment stored in memcached",
+        "fields":
+        [
+            {
+                "name": "key",
+                "type": "string",
+                "default": "",
+                "doc" : "The memcached key for accessing the image data"
+            },
+
+            {
+                "name": "bounds",
+                "type": "com.echo5.speedracer.render3d.avro.primitives.BoundingBox2i",
+                "doc" : "The bounding box of the fragment in pixel coordinates.  If fragments do not overlap, they may be trivially composed regardless of transparency."
+            },
+            {
+                "name": "isOpaque",
+                "type": "boolean",
+                "doc" : "If true, the image is known to have only opaque pixels (i.e. A=255)."
+            }
+        ]
+    },
+    {
+        "namespace": "com.echo5.speedracer.render3d.avro",
+        "type": "record",
+        "name": "ImageFragmentList",
+        "doc" : "A collection of image fragments associated with a specific FrameID.  This is both the input and output of a compositing-worker task",
+        "fields":
+        [
+            {
+                "name": "frame",
+                "type": "FrameID"
+            },
+            {
+                "name": "fragments",
+                "type": {
+                    "type": "array",
+                    "items": "ImageFragmentInfo"
+                },
+                "default": []
+            },
+            {
+                "name": "totalCount",
+                "type": "int",
+                "default": 0,
+                "doc" : "Total number of RenderingTasks associated with frame, if known (otherwise 0)."
+            },
+            {
+                "name": "accumCount",
+                "type": "int",
+                "default": 1,
+                "doc" : "The number of aggregated RenderingTasks this fragment list represents.  Always >= 1.  If accumCount==totalCount, the image is complete."
+            }
+        ]
+    }
+]
+
