@@ -26,11 +26,15 @@ namespace TestData1 {
         flatbuffers::FlatBufferBuilder builder;
 
         std::vector<flatbuffers::Offset<ImageFragmentInfo>> ifis;
-        ifis.emplace_back( CreateImageFragmentInfoDirect(builder, frag_key1, &frag_box1, false) );
-        ifis.emplace_back( CreateImageFragmentInfoDirect(builder, frag_key2, &frag_box1, false) );
 
-        auto ifl = CreateImageFragmentListDirect(builder,
-                                                 CreateFrameIDDirect(builder, frame_id),
+        auto ifi = CreateImageFragmentInfoDirect(builder, frag_key1, &frag_box1, false);
+        ifis.emplace_back( ifi );
+
+        ifi = CreateImageFragmentInfoDirect(builder, frag_key2, &frag_box2, false);
+        ifis.emplace_back( ifi );
+
+        auto fid = CreateFrameIDDirect(builder, frame_id);
+        auto ifl = CreateImageFragmentListDirect(builder, fid,
                                                  &ifis, total_count, accum_count);
 
         builder.Finish(ifl);
@@ -60,8 +64,6 @@ namespace TestData1 {
 
         assert(ifi1->key() && ifi1->key()->str() == frag_key1);
         assert(ifi2->key() && ifi2->key()->str() == frag_key2);
-        
-        assert(ifl);
     }
     
 
