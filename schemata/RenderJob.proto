@@ -1,0 +1,101 @@
+syntax = "proto3";
+option optimize_for = SPEED;
+//option cc_enable_arenas = true;
+
+
+package speedracer_proto;
+
+
+enum DataBufferFormat
+{
+    BUFFER_NONE = 0;
+    BUFFER_RGB_8 = 1;
+    BUFFER_RGBA_8 = 2;
+    BUFFER_UINT_16_LE = 3;
+    BUFFER_UINT_16_BE = 4;
+    BUFFER_FLOAT_32_LE = 5;
+}
+
+message Vector3f
+{
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message Color3f
+{
+    float r = 1;
+    float g = 2;
+    float b = 3;
+}
+
+message Matrix4f
+{
+    Vector3f basis_x = 1;
+    Vector3f basis_y = 2;
+    Vector3f t = 3;
+    float s = 4;
+}
+
+message Viewport
+{
+    int32 width = 1;
+    int32 height = 2;
+}
+
+message BoundingBox2i
+{
+    int32 xmin = 1;
+    int32 xmax = 2;
+
+    int32 ymin = 3;
+    int32 ymax = 4;
+}
+
+message BoundingBox3f
+{
+    float xmin = 1;
+    float xmax = 2;
+
+    float ymin = 3;
+    float ymax = 4;
+
+    float zmin = 5;
+    float zmax = 6;
+}
+
+message DataBuffer
+{
+    DataBufferFormat format = 1;
+    bytes data = 2;
+}
+
+message FrameID
+{
+    string id = 1;
+}
+
+
+message ImageFragmentBuffers
+{
+    Viewport   extents = 1;
+    DataBuffer pixels = 2;
+    DataBuffer depth = 3;
+}
+
+message ImageFragmentInfo
+{
+    string        key = 1;
+    BoundingBox2i bounds = 2;
+    bool          isOpaque = 3;
+}
+
+
+message ImageFragmentList
+{
+    FrameID        frame = 1;
+    repeated ImageFragmentInfo  fragments = 2;
+    int32                     totalCount = 3;
+    int32                     accumCount = 4;
+}
