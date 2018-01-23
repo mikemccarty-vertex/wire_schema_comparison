@@ -1109,6 +1109,7 @@ void ImageFragmentBuffers::__set_pixels(const DataBuffer& val) {
 
 void ImageFragmentBuffers::__set_depth(const DataBuffer& val) {
   this->depth = val;
+__isset.depth = true;
 }
 
 uint32_t ImageFragmentBuffers::read(::apache::thrift::protocol::TProtocol* iprot) {
@@ -1181,10 +1182,11 @@ uint32_t ImageFragmentBuffers::write(::apache::thrift::protocol::TProtocol* opro
   xfer += this->pixels.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("depth", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += this->depth.write(oprot);
-  xfer += oprot->writeFieldEnd();
-
+  if (this->__isset.depth) {
+    xfer += oprot->writeFieldBegin("depth", ::apache::thrift::protocol::T_STRUCT, 3);
+    xfer += this->depth.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1387,6 +1389,8 @@ uint32_t ImageFragmentList::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   using ::apache::thrift::protocol::TProtocolException;
 
+  bool isset_frame = false;
+  bool isset_fragments = false;
 
   while (true)
   {
@@ -1399,7 +1403,7 @@ uint32_t ImageFragmentList::read(::apache::thrift::protocol::TProtocol* iprot) {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->frame.read(iprot);
-          this->__isset.frame = true;
+          isset_frame = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1419,7 +1423,7 @@ uint32_t ImageFragmentList::read(::apache::thrift::protocol::TProtocol* iprot) {
             }
             xfer += iprot->readListEnd();
           }
-          this->__isset.fragments = true;
+          isset_fragments = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1449,6 +1453,10 @@ uint32_t ImageFragmentList::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   xfer += iprot->readStructEnd();
 
+  if (!isset_frame)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_fragments)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 

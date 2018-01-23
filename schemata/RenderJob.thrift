@@ -76,7 +76,7 @@ struct ImageFragmentBuffers
 {
     1 : Viewport   extents;
     2 : DataBuffer pixels;
-    3 : DataBuffer depth;
+    3 : optional DataBuffer depth;
 }
 
 struct ImageFragmentInfo
@@ -91,8 +91,8 @@ typedef list<ImageFragmentInfo> ImageFragmentInfo_list;
 
 struct ImageFragmentList
 {
-    1 : FrameID                 frame;
-    2 : ImageFragmentInfo_list  fragments;
+    1 : required FrameID        frame;
+    2 : required ImageFragmentInfo_list  fragments;
     3 : i32                     totalCount = 0;
     4 : i32                     accumCount = 0;
 }

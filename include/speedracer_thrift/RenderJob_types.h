@@ -454,9 +454,7 @@ void swap(ImageFragmentInfo &a, ImageFragmentInfo &b);
 std::ostream& operator<<(std::ostream& out, const ImageFragmentInfo& obj);
 
 typedef struct _ImageFragmentList__isset {
-  _ImageFragmentList__isset() : frame(false), fragments(false), totalCount(true), accumCount(true) {}
-  bool frame :1;
-  bool fragments :1;
+  _ImageFragmentList__isset() : totalCount(true), accumCount(true) {}
   bool totalCount :1;
   bool accumCount :1;
 } _ImageFragmentList__isset;
