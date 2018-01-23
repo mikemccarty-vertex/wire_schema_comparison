@@ -87,7 +87,7 @@ struct ImageFragmentInfo
 }
 
 
-typedef list<ImageFragmentInfo> ( cpp.template = "std::vector" ) ImageFragmentInfo_list;
+typedef list<ImageFragmentInfo> ImageFragmentInfo_list;
 
 struct ImageFragmentList
 {

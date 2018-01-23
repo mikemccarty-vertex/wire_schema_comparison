@@ -24,7 +24,7 @@ $(filter include/%_thrift.hpp,$(THRIFT_HPP)) : include/%_thrift.hpp : schemata/%
 	thrift --gen cpp:moveable_types,pure_enums,no_ostream_operators,no_default_operators -out include/thrift -I include -I include/thrift $<
 
 $(CPP_EXE) : $(CPP_SRC)
-	clang++ -g -std=c++14 -I src -I include $< -o $@ -lavrocpp_s
+	clang++ -g -std=c++14 -I src/cpp -I include $< -o $@ -lavrocpp_s
 
 .PHONY: install clean
 #install:
