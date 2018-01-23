@@ -11,8 +11,7 @@ CPP_EXE := $(patsubst src/cpp/%.cpp,bin_cpp/%,$(CPP_SRC))
 
 vpath %.cpp src/cpp
 
-all: $(AVRO_HPP) $(FLATBUFFERS_HPP) $(THRIFT_HPP) $(CPP_EXE) 
-	echo CPP_EXE == $(CPP_EXE)
+all: bin_cpp_dir $(AVRO_HPP) $(FLATBUFFERS_HPP) $(THRIFT_HPP) $(CPP_EXE) 
 
 $(filter include/%_avro.hpp,$(AVRO_HPP)) : include/%_avro.hpp : schemata/%.avsc
 	avrogencpp -i $< -o $@ -n speedracer_avro
@@ -23,6 +22,9 @@ $(filter include/%_fb.hpp,$(FLATBUFFERS_HPP)) : include/%_fb.hpp : schemata/%.fb
 
 $(filter include/%_thrift.hpp,$(THRIFT_HPP)) : include/%_thrift.hpp : schemata/%.thrift
 	thrift --gen cpp:moveable_types,pure_enums,no_ostream_operators,no_default_operators -out include/speedracer_thrift -I include -I include/speedracer_thrift $<
+
+bin_cpp_dir :
+	mkdir -p bin_cpp
 
 bin_cpp/RenderJob_avro : src/cpp/RenderJob_avro.cpp
 	clang++ -g -std=c++14 -I src/cpp -I include $< -o $@ -lavrocpp_s
@@ -40,4 +42,4 @@ bin_cpp/RenderJob_thrift : src/cpp/RenderJob_thrift.cpp
 
 clean:
 	rm -f include/*.hpp include/speedracer_thrift/* $(CPP_EXE)
-	rm -rf bin_cpp/*.dSYM
+	rm -rf bin_cpp
